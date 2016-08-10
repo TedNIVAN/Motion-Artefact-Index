@@ -177,12 +177,25 @@ void getMAI(float sumOfElementsVolumeROIa, float sumOfElementsVolumeROIb, int nu
     *MAI = abs((meanROIb/meanROIa) - 1);
 }
 
+/* Convert float to string */
+string Convert(float number){
+    ostringstream buff;
+    buff<<number;
+    return buff.str();   
+}
+
 /* Write MAI into a json file. */
-void writeJson(ofstream *myFile, string name, float MAI)
+void writeJson(ofstream *myFile, string name, float MAI, string input)
 {
-    myFile->open(name);
+    size_t lastIndex = input.find_first_of(".");
+    string rawName = input.substr(0, lastIndex);
+    string stringMAI = Convert(MAI);
+
+    myFile->open(name.c_str());
     *myFile << "{" << endl;
-    *myFile << "  \"mai\": " + to_string(MAI) << endl;
+    *myFile << "  \"mai\": \"" + stringMAI + "\","<< endl;
+    *myFile << "  \"type\": \"motionArtefactIndex\"," << endl;
+    *myFile << "  \"imageId\": \"" + rawName + "\"" << endl;
     *myFile << "}" << endl;
     myFile->close();
 }
@@ -388,7 +401,7 @@ int mergeROIs(int R1, int R2)
 }
 
 /* Analyze Slices. */
-void analyzeSlices(int *max, int threshold, Tinfo *imageInfo, FloatImageType::Pointer image)
+void analyzeSlices(int *max, int threshold, Tinfo *imageInfo, FloatImageType::Pointer image, string input)
 {
     Tbound boundaries;
     
@@ -502,7 +515,7 @@ void analyzeSlices(int *max, int threshold, Tinfo *imageInfo, FloatImageType::Po
     getMAI(sumOfElementsVolumeROIa, sumOfElementsVolumeROIb,numberOfElementsVolumeROIa, numberOfElementsVolumeROIb, &MAI);
     
     /* Write MAI into a json file. */
-    writeJson(&MAIoutput, fileNameMAI, MAI);
+    writeJson(&MAIoutput, fileNameMAI, MAI, input);
     
     cout << "   \'" + fileNameMAI + "\' file generated" << endl;
     

@@ -13,6 +13,7 @@
   "author": "ted.jp.nivan@gmail.com",
   "license": "Apache-2.0",
   "dependencies": {
-    "clusterpost-lib": "^1.0.1"
+    "clusterpost-lib": "^1.0.1",
+    "minimist": "^1.2.0"
   }
 }

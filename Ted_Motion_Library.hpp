@@ -10,6 +10,9 @@
 #ifndef Ted_Motion_Library_hpp
 #define Ted_Motion_Library_hpp
 
+#include <string>
+#include <sstream>
+
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkImageSliceIteratorWithIndex.h"
@@ -93,7 +96,7 @@ void maxSlices(int *max, Tinfo *imageInfo, FloatImageType::Pointer image);
 void getMAI(float sumOfElementsVolumeROIa, float sumOfElementsVolumeROIb, int numberOfElementsVolumeROIa, int numberOfElementsVolumeROIb, float *MAI);
 
 /* Write MAI into a json file. */
-void writeJson(ofstream *myFile, string name, float MAI);
+void writeJson(ofstream *myFile, string name, float MAI, string input);
 
 /*--------------------------------------------------------*/
 /* TRANSFORMATION FUNCTIONS */
@@ -112,10 +115,13 @@ void getROIs(float *ROIa, float *ROIb, int numberOfElementsROIa, int numberOfEle
 int mergeROIs(int R1, int R2);
 
 /* Analyze Slices. */
-void analyzeSlices(int *max, int threshold, Tinfo *imageInfo, FloatImageType::Pointer image);
+void analyzeSlices(int *max, int threshold, Tinfo *imageInfo, FloatImageType::Pointer image, string input);
 
 /* Sum of elements of a vector. */
 float sumVector(int size, float *myVector);
+
+/* Convert float to string */
+string Convert(float number);
 
 /*--------------------------------------------------------*/
 /* TEMPLATED FUNCTIONS */

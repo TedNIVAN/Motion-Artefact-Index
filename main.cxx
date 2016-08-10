@@ -29,7 +29,9 @@ int main(int argc, char *argv[])
     }
     else
     {
-        threshold = stoi(argv[1]);
+	stringstream ss(argv[1]);
+	ss >> threshold;
+        //threshold = stoi(argv[1]);
         
         for(int i=2; i<argc; i++)
         {
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
             
             maxSlices(max, &imageInfo, image);
             
-            analyzeSlices(max, threshold, &imageInfo, image);
+            analyzeSlices(max, threshold, &imageInfo, image, argv[i]);
             
             delete [] max; max = NULL;
         }

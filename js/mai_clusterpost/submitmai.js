@@ -1,6 +1,7 @@
 var clusterpost = require("clusterpost-lib");
 var argv = require('minimist')(process.argv.slice(2));
 var inputfiles = [];
+var path = require('path');
 
 const getConfigFile = function () {
  try {
@@ -14,15 +15,17 @@ const getConfigFile = function () {
 
 var imageName = argv['f'];
 var threshold = argv['t'];
+threshold = "" + threshold;
 
-if (imageName != undefined && threshold != undefined)
+if (imageName === undefined || threshold === undefined)
 {
     console.error("usage: mai -f -t");
     console.error("node submitmai.js -f image file name -t threshold");
-    Process.exit(1);
+    process.exit(1);
 }
 
 inputfiles.push(imageName);
+imageName = path.basename(imageName);
 
 var conf = getConfigFile();
 
@@ -65,10 +68,12 @@ clusterpost.setClusterPostServer(conf.url);
 
 clusterpost.userLogin(conf.user)
 .then(function(res){
+    console.log(res);
     return clusterpost.getExecutionServers();
 })
 .then(function(res){
     job.executionserver = res[0].name; //Or select the computing grid where you want to submit your job.
+    console.log(job);
     return clusterpost.createAndSubmitJob(job, inputfiles)
 })
 .then(function(jobid){ 
